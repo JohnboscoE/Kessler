@@ -1,0 +1,26 @@
+{
+  "name": "kessler",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Map the transitive blast radius of a compromised npm package across a dependency graph.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm --prefix web run dev",
+    "build": "npm --prefix web run build",
+    "api": "npm --prefix api start",
+    "api:dev": "npm --prefix api run dev",
+    "fetch": "node ingest/fetch.mjs",
+    "transform": "node ingest/transform.mjs",
+    "resolve": "node ingest/resolve.mjs",
+    "typosquat": "node ingest/typosquat.mjs",
+    "ingest": "npm run fetch && npm run transform && npm run resolve && npm run typosquat",
+    "stats": "node ingest/stats.mjs"
+  },
+  "dependencies": {
+    "semver": "^7.6.3"
+  }
+}
