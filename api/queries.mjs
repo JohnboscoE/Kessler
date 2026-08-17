@@ -59,6 +59,30 @@ RETURN path`;
 }
 
 /**
+ * Reverse dependency closure — the defender's question.
+ *
+ * Blast radius asks "does *this* project reach the compromise". This asks the
+ * inverse across the whole graph: start at the compromised version and walk
+ * RESOLVES_TO **inbound** to find everything downstream of it. That is what you
+ * need at 09:06 when you do not yet know which of your services are affected,
+ * and you cannot get it by scanning lockfiles one at a time.
+ *
+ * `relDirection: 'incoming'` is the only change from the forward form. The edge
+ * set is identical; the direction of the question is not.
+ */
+export const REVERSE_CLOSURE = `
+CALL algo.SSpaths({
+  sourceNode: $sourceId,
+  relTypes: ['RESOLVES_TO'],
+  relDirection: 'incoming',
+  maxLen: $maxLen,
+  pathCount: $pathCount
+})
+YIELD path
+RETURN path
+`.trim();
+
+/**
  * The naive comparison for the §13 timing claim: one bounded traversal per
  * source. Takes scalar parameters, which the config map does accept.
  */

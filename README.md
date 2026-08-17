@@ -33,6 +33,35 @@ Those are graph questions. A lockfile scanner answers the first one badly and th
 
 ---
 
+## Answering the track brief
+
+> *"When a package is compromised at 09:00, which of your services are exposed by 09:06? That is a transitive reverse dependency closure over an ecosystem graph with tens of millions of versioned nodes, and it is the kind of question a vector index cannot answer at all."*
+
+| The brief asks for | Kessler | Where |
+|---|---|---|
+| An npm **or** PyPI dependency graph in HydraDB | npm. 4,765 packages, 86,024 versions, 224,533 resolved edges | `ingest/` |
+| Compromised at 09:00 → exposed by 09:06 | One `algo.MSpaths` call, all sources at once | `POST /scan` |
+| Transitive **reverse** dependency closure | `algo.SSpaths` with `relDirection: 'incoming'` from the compromised version | `POST /downstream` |
+| Which packages share a maintainer with the compromised one | Two-hop pattern across `MAINTAINS` | `GET /maintainers` |
+| Which lockfiles resolved to the bad version while it was live | Publish-timestamp window over `RESOLVES_TO` | `GET /live-window` |
+| Which names sit close enough to be a typosquat | Generated typos, existence-checked against the registry, graded by download disparity | `GET /typosquats` |
+
+**The two questions are different, and Kessler answers both.** Blast radius asks *"does this project reach the compromise"* — you upload a lockfile. Reverse closure asks *"who downstream is affected"* — you name the compromise and walk inbound edges across the whole graph, which is what you actually need at 09:06 when you do not yet know which services to check. The edge set is identical; only `relDirection` changes.
+
+### Why a vector index cannot answer this
+
+Similarity search retrieves things that *resemble* a query. "Is there a path from my lockfile to `chalk@4.1.2`, and how long is it" is not a resemblance question — it has a discrete, verifiable answer that depends on the existence of specific edges. Embedding `chalk` and finding nearby packages returns things that look like chalk. It cannot tell you that `serve-static@1.16.3` reaches `function-bind@1.1.2` in six hops through `send`, `side-channel` and `call-bound`, because that fact lives in the topology, not in any property of the endpoints. No amount of nearest-neighbour recall reconstructs a path.
+
+### What Kessler does not do
+
+Stated plainly, because the brief describes more than this project attempts:
+
+- **No PyPI.** npm only. The brief says "npm or PyPI"; halving the ingest work bought depth elsewhere.
+- **No malware detection.** The brief's description of a worm that self-propagates and persists in `.claude/` and `.vscode/` directories surviving `npm uninstall` is a description of the *threat* (the September 2025 Shai-Hulud campaign), not of this tool. Kessler answers *exposure*, never *"is this package malicious"*. It does not read package contents or install scripts at all.
+- **Not tens of millions of nodes.** 86,024 versions, bounded deliberately — see [Honest bounds](#honest-bounds). On-demand lockfile ingest means coverage of *your* project is complete regardless of the crawl's size, which matters more in practice than the total node count.
+
+---
+
 ## How HydraDB is used, and what this would lose without it
 
 This is the question the judging asks explicitly, so here is a direct answer.

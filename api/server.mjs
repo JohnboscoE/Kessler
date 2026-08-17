@@ -21,6 +21,7 @@ import {
   TYPOSQUAT_NEIGHBOURHOOD,
   VERSION_EXISTS,
   VERTEX_ID_FOR_KEY,
+  REVERSE_CLOSURE,
   GRAPH_COVERAGE,
   decodePath,
 } from './queries.mjs';
@@ -68,6 +69,16 @@ app.post('/scan', async (request, reply) => {
     return reply.code(400).send({ error: 'compromised must be a "name@version" string' });
   }
 
+  // A bare name is the single most common mistake, and "not in the graph" is a
+  // useless thing to say about it. Name the actual problem instead.
+  if (!/^(?:@[^/]+\/)?[^@]+@.+$/.test(compromised.trim())) {
+    return reply.code(400).send({
+      error:
+        `"${compromised}" needs a version — use name@version, for example lodash@4.17.21. ` +
+        'A compromise affects specific releases, not a package as a whole.',
+    });
+  }
+
   let parsed;
   try {
     parsed = parseLockfile(lockfile, { includeDev });
@@ -103,8 +114,16 @@ app.post('/scan', async (request, reply) => {
   // §10 error copy: name the package back to the user rather than failing vaguely.
   const known = await db.run(VERSION_EXISTS, { key: compromised });
   if (!firstValue(known)) {
+    // If the lockfile was ingested, everything it depends on is now present —
+    // so an absent target means it is not a dependency of this project. Say
+    // that, rather than implying the graph is incomplete.
+    const hint = ingested && !ingested.skipped
+      ? 'Your lockfile was ingested, so every package it depends on is in the graph. ' +
+        'This one is not among them — it may be your own project rather than a dependency, ' +
+        'or the version may differ from the one you have installed.'
+      : 'It is not in the crawled graph. Upload a lockfile that depends on it and it will be ingested.';
     return reply.code(404).send({
-      error: `${compromised} is not in the graph. Check the name.`,
+      error: `${compromised} is not in the graph. ${hint}`,
       sources: parsed.versionIds.length,
     });
   }
@@ -233,6 +252,51 @@ app.post('/chokepoints', async (request, reply) => {
     totalVersions: graph.versions.length,
     ingested,
     chokepoints: scored.slice(0, limit),
+  };
+});
+
+/**
+ * Reverse dependency closure — the defender's question at 09:06.
+ *
+ * /scan asks "does this lockfile reach the compromise". This asks the inverse
+ * across the entire graph: name the compromised release, walk RESOLVES_TO
+ * inbound, and report everything downstream of it. You need this before you know
+ * which of your services to check, and you cannot get it by scanning lockfiles
+ * one at a time.
+ */
+app.post('/downstream', async (request, reply) => {
+  const { compromised, maxLen = MAX_DEPTH, pathCount = 200 } = request.body ?? {};
+  if (!compromised) return reply.code(400).send({ error: 'compromised is required' });
+
+  const sourceId = firstValue(await db.run(VERTEX_ID_FOR_KEY, { key: compromised }));
+  if (sourceId === undefined) {
+    return reply.code(404).send({ error: `${compromised} is not in the graph.` });
+  }
+
+  const startedAt = performance.now();
+  const result = await db.run(
+    REVERSE_CLOSURE,
+    { sourceId, maxLen: Number(maxLen), pathCount: Number(pathCount) },
+    { timeoutMs: 250_000 }
+  );
+  const elapsedMs = Math.round(performance.now() - startedAt);
+
+  const paths = normalizePaths(result);
+  const downstream = new Set();
+  for (const path of paths) {
+    for (const node of path.nodes) if (node !== compromised) downstream.add(node);
+  }
+
+  return {
+    compromised,
+    downstreamCount: downstream.size,
+    downstream: [...downstream].sort().slice(0, 200),
+    maxDepth: paths.reduce((m, p) => Math.max(m, p.depth), 0),
+    elapsedMs,
+    // pathCount bounds enumeration, so a busy package's closure is a sample
+    // rather than the whole of it. Said plainly instead of implied.
+    truncated: paths.length >= Number(pathCount),
+    paths: paths.slice(0, 50),
   };
 });
 
