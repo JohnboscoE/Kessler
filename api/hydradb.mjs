@@ -35,8 +35,15 @@ export class HydraDB {
     return `${baseUrl.replace(/\/$/, '')}/v1/graphs/${graph}/query`;
   }
 
-  async run(query, parameters = {}) {
+  /**
+   * `timeoutMs` maps to the server's `timeout_ms`, which raises the per-query
+   * runtime limit above its 30s default. Bulk edge writes need it: each row
+   * MATCHes two vertices, so a batch gets slower as the graph grows and a
+   * 1,000-row batch will exceed 30s well before the load finishes.
+   */
+  async run(query, parameters = {}, { timeoutMs } = {}) {
     const body = Object.keys(parameters).length > 0 ? { query, parameters } : { query };
+    if (timeoutMs) body.timeout_ms = timeoutMs;
     return this.post(body);
   }
 
@@ -68,7 +75,7 @@ export class HydraDB {
     // unsupported queries, so a non-2xx check alone is not enough.
     if (parsed?.error) {
       throw new HydraError(`HydraDB ${parsed.error.code ?? 'error'}: ${parsed.error.message}`, {
-        status: 400,
+        status: parsed.error.code === 'query_timeout' ? 408 : 400,
       });
     }
     return parsed;

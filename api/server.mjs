@@ -9,6 +9,9 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { HydraDB, HydraError, toObjects } from './hydradb.mjs';
 import { parseLockfile, LockfileError } from './lockfile.mjs';
+import { buildLockfileGraph } from './lockfile-graph.mjs';
+import { ingestLockfileGraph, IdAllocator } from './graph-writer.mjs';
+import { INCIDENTS } from './incidents.mjs';
 import {
   blastRadius,
   BLAST_RADIUS_SINGLE_SOURCE,
@@ -53,7 +56,13 @@ app.get('/coverage', async () => {
  * the traversal runs once, server-side, rather than once per dependency.
  */
 app.post('/scan', async (request, reply) => {
-  const { lockfile, compromised, includeDev = false, resultLimit = 500 } = request.body ?? {};
+  const {
+    lockfile,
+    compromised,
+    includeDev = false,
+    resultLimit = 500,
+    ingest = true,
+  } = request.body ?? {};
 
   if (!compromised || typeof compromised !== 'string') {
     return reply.code(400).send({ error: 'compromised must be a "name@version" string' });
@@ -73,6 +82,24 @@ app.post('/scan', async (request, reply) => {
     return reply.code(400).send({ error: 'lockfile contained no resolved dependencies' });
   }
 
+  // On-demand ingest. A lockfile is already a fully resolved graph, so an
+  // uploaded one can be merged in directly — no registry calls, no semver work.
+  // Without this, an arbitrary lockfile mostly misses our crawl and the honest
+  // answer would be "not in the graph" rather than a result.
+  let ingested = null;
+  if (ingest) {
+    try {
+      const graph = buildLockfileGraph(lockfile, { includeDev });
+      const allocator = await IdAllocator.load();
+      ingested = await ingestLockfileGraph(db, graph, allocator);
+    } catch (err) {
+      // v1 lockfiles and malformed trees are not fatal — we can still answer
+      // over whatever the crawl already covers, and we say so.
+      request.log.warn({ err }, 'lockfile ingest skipped');
+      ingested = { skipped: String(err.message ?? err) };
+    }
+  }
+
   // §10 error copy: name the package back to the user rather than failing vaguely.
   const known = await db.run(VERSION_EXISTS, { key: compromised });
   if (!firstValue(known)) {
@@ -82,10 +109,19 @@ app.post('/scan', async (request, reply) => {
     });
   }
 
+  // Coverage: which of the user's versions the graph actually knows about.
+  // Reporting this beats silently returning nothing — a partial answer the user
+  // can interpret is far more useful than an empty one they cannot.
+  const coverage = await measureCoverage(parsed.versionIds);
+
+  // Only sources the graph actually contains are worth sending; unknown keys
+  // cannot start a traversal and would just inflate the query.
+  const sourceKeys = coverage.present.length ? coverage.present : parsed.versionIds;
+
   const startedAt = performance.now();
   const result = await db.run(
     blastRadius({
-      sourceKeys: parsed.versionIds,
+      sourceKeys,
       targetKey: compromised,
       maxLen: MAX_DEPTH,
       pathCount: 5,
@@ -99,14 +135,117 @@ app.post('/scan', async (request, reply) => {
 
   return {
     compromised,
-    sources: parsed.versionIds.length,
+    sources: sourceKeys.length,
     packages: parsed.packages,
     devSkipped: parsed.devSkipped,
     exposedCount: exposed.size,
     maxDepth: MAX_DEPTH,
     elapsedMs,
+    coverage: {
+      total: parsed.versionIds.length,
+      inGraph: coverage.present.length,
+      missing: coverage.missing.slice(0, 20),
+      missingCount: coverage.missing.length,
+    },
+    ingested,
     paths,
   };
+});
+
+/**
+ * Which of these version keys exist as vertices. Done as one traversal-free
+ * lookup per key: HydraDB has no `IN` over a list parameter, and a list cannot
+ * be passed into a config map, so there is no batched form available.
+ */
+async function measureCoverage(keys) {
+  const present = [];
+  const missing = [];
+  const checks = keys.map(async (key) => {
+    const res = await db.run(VERSION_EXISTS, { key });
+    if ((res.rows ?? []).length) present.push(key);
+    else missing.push(key);
+  });
+  await Promise.all(checks);
+  return { present, missing };
+}
+
+/**
+ * Choke points: what in *this* lockfile would hurt most if it were compromised.
+ *
+ * Inverts the product's question. Instead of "package X was compromised, am I
+ * exposed", this asks "nothing has happened yet — where is my worst latent
+ * exposure". It is also the honest answer to "how do I know what to type": for
+ * most people, most of the time, there is no advisory in hand.
+ *
+ * Ranking rewards reach and depth together. A package every dependency touches
+ * at depth 1 is not interesting — a grep finds that. What matters is something
+ * reached by many distinct sources along long chains, because that is what a
+ * human auditor would never trace by hand.
+ */
+app.post('/chokepoints', async (request, reply) => {
+  const { lockfile, includeDev = false, limit = 10, candidates = 30 } = request.body ?? {};
+
+  let graph;
+  try {
+    graph = buildLockfileGraph(lockfile, { includeDev });
+  } catch (err) {
+    return reply.code(400).send({ error: `could not read lockfile: ${err.message}` });
+  }
+  if (!graph.versions.length) {
+    return reply.code(400).send({ error: 'lockfile contained no resolved dependencies' });
+  }
+
+  const allocator = await IdAllocator.load();
+  const ingested = await ingestLockfileGraph(db, graph, allocator);
+
+  const inbound = new Map();
+  for (const edge of graph.edges) inbound.set(edge.to, (inbound.get(edge.to) ?? 0) + 1);
+  const ranked = [...inbound.entries()].sort((a, b) => b[1] - a[1]).slice(0, candidates);
+
+  const sourceKeys = graph.versions.map((v) => v.key);
+  const scored = [];
+
+  for (const [targetKey] of ranked) {
+    const result = await db.run(
+      blastRadius({ sourceKeys, targetKey, maxLen: MAX_DEPTH, pathCount: 5, resultLimit: 300 })
+    );
+    const paths = normalizePaths(result);
+    if (!paths.length) continue;
+
+    const sources = new Set(paths.map((p) => p.nodes[0]));
+    const maxDepth = paths.reduce((m, p) => Math.max(m, p.depth), 0);
+    const deep = paths.filter((p) => p.depth >= 3).length;
+
+    scored.push({
+      target: targetKey,
+      reachedBy: sources.size,
+      paths: paths.length,
+      maxDepth,
+      deepPaths: deep,
+      score: sources.size * (maxDepth + 1) + deep * 3,
+      deepest: paths[0] ?? null,
+    });
+  }
+
+  scored.sort((a, b) => b.score - a.score);
+
+  return {
+    totalVersions: graph.versions.length,
+    ingested,
+    chokepoints: scored.slice(0, limit),
+  };
+});
+
+/** Documented real-world compromises, filtered to those this graph can answer for. */
+app.get('/incidents', async () => {
+  const checked = await Promise.all(
+    INCIDENTS.map(async (incident) => {
+      const key = `${incident.pkg}@${incident.version}`;
+      const res = await db.run(VERSION_EXISTS, { key });
+      return { ...incident, key, inGraph: (res.rows ?? []).length > 0 };
+    })
+  );
+  return { incidents: checked };
 });
 
 app.get('/introduction', async (request, reply) => {
@@ -226,11 +365,24 @@ function firstValue(result) {
 /**
  * Path rows arrive as raw tagged cells, not through toObjects — the decoder
  * needs the tag and the typed node properties that unwrapping would discard.
+ *
+ * Deduplicated by node chain. The bulk loader writes RESOLVES_TO with CREATE
+ * while on-demand ingest uses MERGE, so a package present in both the crawl and
+ * an uploaded lockfile can carry the same logical edge twice and the traversal
+ * will faithfully return the same chain more than once.
  */
 function normalizePaths(result) {
-  return (result?.rows ?? [])
-    .map((row) => decodePath(Array.isArray(row) ? row[0] : row))
-    .filter(Boolean);
+  const seen = new Set();
+  const paths = [];
+  for (const row of result?.rows ?? []) {
+    const decoded = decodePath(Array.isArray(row) ? row[0] : row);
+    if (!decoded) continue;
+    const signature = decoded.nodes.join('>');
+    if (seen.has(signature)) continue;
+    seen.add(signature);
+    paths.push(decoded);
+  }
+  return paths.sort((a, b) => b.depth - a.depth);
 }
 
 try {

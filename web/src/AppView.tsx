@@ -1,5 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { scan, coverage, ApiError, type ScanResult, type Coverage } from './api';
+import {
+  scan,
+  coverage,
+  loadExampleLockfile,
+  incidents as fetchIncidents,
+  chokepoints as fetchChokepoints,
+  EXAMPLE,
+  ApiError,
+  type ScanResult,
+  type Coverage,
+  type Incident,
+  type ChokePoint,
+} from './api';
 
 /**
  * The instrument.
@@ -25,18 +37,45 @@ export function AppView({ onBack }: { onBack: () => void }) {
   const [target, setTarget] = useState('');
   const [state, setState] = useState<State>({ status: 'idle' });
   const [cover, setCover] = useState<Coverage | null>(null);
+  const [known, setKnown] = useState<Incident[]>([]);
+  const [chokes, setChokes] = useState<ChokePoint[] | 'loading' | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     coverage()
       .then(setCover)
       .catch(() => setCover(null));
+    fetchIncidents()
+      .then((r) => setKnown(r.incidents))
+      .catch(() => setKnown([]));
   }, []);
+
+  const findChokepoints = useCallback(async () => {
+    if (!lockfile) return;
+    setChokes('loading');
+    try {
+      const r = await fetchChokepoints(lockfile.text);
+      setChokes(r.chokepoints);
+    } catch {
+      setChokes(null);
+    }
+  }, [lockfile]);
 
   const readFile = useCallback(async (file: File) => {
     const text = await file.text();
     setLockfile({ name: file.name, text });
     setState({ status: 'idle' });
+  }, []);
+
+  const loadExample = useCallback(async () => {
+    try {
+      const text = await loadExampleLockfile();
+      setLockfile({ name: `${EXAMPLE.label} (example)`, text });
+      setTarget(EXAMPLE.target);
+      setState({ status: 'idle' });
+    } catch (err) {
+      setState({ status: 'error', message: (err as ApiError).message, kind: 'unknown' });
+    }
   }, []);
 
   const run = useCallback(async () => {
@@ -126,9 +165,63 @@ export function AppView({ onBack }: { onBack: () => void }) {
           />
         </label>
 
+        {/* Two ways to answer "what do I type here". Real advisories, or the
+            choke points in your own tree when no advisory has landed. */}
+        {known.length > 0 && (
+          <div className="picker">
+            <div className="label">Documented compromises</div>
+            <div className="picker__row">
+              {known.map((i) => (
+                <button
+                  key={i.key}
+                  type="button"
+                  className="chip"
+                  title={`${i.date} — ${i.summary}`}
+                  data-absent={!i.inGraph}
+                  onClick={() => setTarget(i.key)}
+                >
+                  {i.label}
+                  {!i.inGraph && <span className="chip__note">not in graph</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {lockfile && (
+          <div className="picker">
+            <div className="label">Or find your own weak points</div>
+            <p className="data picker__hint">
+              Nothing has to have happened yet. This ranks the packages your tree
+              depends on most heavily and most deeply — the ones a compromise
+              would hurt most.
+            </p>
+            <button type="button" className="btn btn--quiet" onClick={() => void findChokepoints()}>
+              {chokes === 'loading' ? 'Traversing…' : 'Analyse this lockfile'}
+            </button>
+            {Array.isArray(chokes) && chokes.length > 0 && (
+              <ul className="chokes">
+                {chokes.map((c) => (
+                  <li key={c.target} className="chokes__row">
+                    <button type="button" className="chokes__pick" onClick={() => setTarget(c.target)}>
+                      {c.target}
+                    </button>
+                    <span className="chokes__meta">
+                      reached by {c.reachedBy} · depth {c.maxDepth}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
         <div className="app__actions">
           <button type="button" className="btn" disabled={!ready} onClick={() => void run()}>
             {state.status === 'scanning' ? 'Traversing 6 shells.' : 'Map exposure'}
+          </button>
+          <button type="button" className="btn btn--quiet" onClick={() => void loadExample()}>
+            Try the example
           </button>
         </div>
 
@@ -201,6 +294,45 @@ function Result({ state }: { state: State }) {
         {result.sources.toLocaleString()} sources traversed in one call · {result.elapsedMs} ms
         {result.devSkipped > 0 ? ` · ${result.devSkipped} dev dependencies excluded` : ''}
       </p>
+
+      <Coverage result={result} />
     </div>
+  );
+}
+
+/**
+ * Coverage is stated, never implied. "No path found" and "we only knew about
+ * half your dependencies" are different answers, and on a security readout the
+ * difference matters more than the tidiness of hiding it.
+ */
+function Coverage({ result }: { result: ScanResult }) {
+  const { coverage: c, ingested } = result;
+  if (!c) return null;
+
+  const complete = c.missingCount === 0;
+  const ingestedCount = ingested && !ingested.skipped ? ingested.versionsWritten ?? 0 : 0;
+
+  return (
+    <p className="data panel__coverage">
+      {complete ? (
+        <>All {c.total.toLocaleString()} of your resolved dependencies are in the graph.</>
+      ) : (
+        <>
+          {c.inGraph.toLocaleString()} of {c.total.toLocaleString()} of your resolved dependencies
+          are in the graph. {c.missingCount.toLocaleString()} could not be placed
+          {c.missing.length > 0 ? `, including ${c.missing.slice(0, 3).join(', ')}` : ''}. Results
+          cover the ones that are.
+        </>
+      )}
+      {ingestedCount > 0 && (
+        <>
+          {' '}
+          Your lockfile was ingested into the graph ({ingestedCount.toLocaleString()} versions
+          {ingested?.ms ? `, ${ingested.ms} ms` : ''}) — a lockfile is already a resolved graph, so
+          no registry lookups were needed.
+        </>
+      )}
+      {ingested?.skipped && <> Ingest skipped: {ingested.skipped}</>}
+    </p>
   );
 }

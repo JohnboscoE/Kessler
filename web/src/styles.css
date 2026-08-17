@@ -699,6 +699,113 @@ h3 {
 
 .app__actions {
   margin-top: var(--s-5);
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+/* Secondary by position and weight, not by hue — §3 allows no accent colour. */
+.btn--quiet {
+  background: transparent;
+  color: var(--dim);
+}
+
+.btn--quiet:hover {
+  color: var(--live);
+}
+
+.panel__coverage {
+  color: var(--dim);
+  margin: var(--s-3) 0 0;
+  max-width: 68ch;
+}
+
+/* ── target pickers ────────────────────────────────────────────────────── */
+
+.picker {
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: var(--border);
+}
+
+.picker__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.picker__hint {
+  color: var(--dim);
+  margin: var(--s-3) 0 var(--s-4);
+  max-width: 64ch;
+}
+
+.chip {
+  font-family: var(--font-data);
+  font-size: 0.8125rem;
+  background: var(--shell);
+  border: var(--border);
+  border-radius: var(--radius);
+  color: var(--live);
+  padding: var(--s-2) var(--s-3);
+  cursor: pointer;
+  transition: border-color 100ms linear;
+}
+
+.chip:hover {
+  border-color: var(--dim);
+}
+
+/* Absent from the graph: dimmed, still selectable — a lockfile upload may
+   bring it in. Never coloured; --breach means real exposure only. */
+.chip[data-absent='true'] {
+  color: var(--dim);
+}
+
+.chip__note {
+  margin-left: var(--s-2);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+.chokes {
+  list-style: none;
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  font-family: var(--font-data);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chokes__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding: var(--s-2) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.chokes__pick {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--live);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.chokes__pick:hover {
+  text-decoration: underline;
+}
+
+.chokes__meta {
+  color: var(--dim);
+  white-space: nowrap;
 }
 
 .btn:disabled {

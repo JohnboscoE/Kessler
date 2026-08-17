@@ -21,17 +21,58 @@
  *   node ingest/load.mjs              load everything
  *   node ingest/load.mjs --benchmark  time batch sizes 100/500/1000 and stop
  */
-import { HydraDB } from '../api/hydradb.mjs';
+import { HydraDB, HydraError } from '../api/hydradb.mjs';
 import { readJsonl, outPath, exists, progress, writeJson } from './lib.mjs';
 
-const BATCH = Number(process.env.KESSLER_BATCH ?? 500);
+const BATCH = Number(process.env.KESSLER_BATCH ?? 1000);
+/**
+ * Per-query runtime limit. The server refuses anything above its own ceiling
+ * with "rejected by admission control", and that ceiling defaults to 30s — too
+ * short for edge batches once the graph passes ~100k edges. Raise it on the node
+ * with GRAPH_MAX_QUERY_RUNTIME_MS (see README) or this stays capped at 30s and
+ * relies entirely on batch halving.
+ */
+const TIMEOUT_MS = Number(process.env.KESSLER_QUERY_TIMEOUT_MS ?? 120_000);
+
+/**
+ * Write one batch, halving it on timeout.
+ *
+ * Edge batches MATCH two vertices per row, so they slow down as the graph fills.
+ * A fixed batch size that works at 10k edges times out at 100k — this load died
+ * exactly there. Rather than pick a conservative size that wastes time early,
+ * the batch shrinks only when it has to and the load keeps going.
+ */
+async function writeBatch(db, query, rows) {
+  if (!rows.length) return;
+  try {
+    await db.run(query, { rows }, { timeoutMs: TIMEOUT_MS });
+  } catch (err) {
+    // 408 = the query ran out of time. 429 with resource_exhausted = admission
+    // control refused the runtime we asked for, which a smaller batch also fixes.
+    const timedOut =
+      err instanceof HydraError && (err.status === 408 || /resource_exhausted/.test(err.message));
+    if (!timedOut || rows.length === 1) throw err;
+    const mid = Math.ceil(rows.length / 2);
+    await writeBatch(db, query, rows.slice(0, mid));
+    await writeBatch(db, query, rows.slice(mid));
+  }
+}
 const BENCHMARK = process.argv.includes('--benchmark');
 
 const db = new HydraDB();
 
 /**
- * Relationship identity counter. Starts high so it can never overlap the dense
- * vertex ids assigned in assignIds().
+ * Relationship identity counter.
+ *
+ * HydraDB shares one id space between vertices and relationships, so the bands
+ * must not overlap. Three bands exist:
+ *
+ *   1 .. 9,999,999          bulk-loaded vertices (dense, assigned below)
+ *   10,000,000 ..           bulk-loaded relationships (this counter)
+ *   100,000,000 ..          on-demand ingest relationships (api/graph-writer.mjs)
+ *
+ * Getting this wrong silently corrupts adjacency rather than erroring — see the
+ * note in graph-writer.mjs.
  */
 let edgeIdCounter = 10_000_000;
 const nextEdgeId = () => edgeIdCounter++;
@@ -88,17 +129,25 @@ async function main() {
     (row) => ({ from: row.maintainer, to: row.package }),
     ['Maintainer', 'Package']
   );
-  total += await loadEdges(
-    'declares.jsonl',
-    'DECLARES',
-    ids,
-    (row) => ({
-      from: row.from,
-      to: row.to,
-      props: { range: row.range, dep_type: row.dep_type },
-    }),
-    ['Version', 'Package']
-  );
+  // DECLARES is the largest edge set by far (~5.7 per version, so well over a
+  // million rows at full scale) and **no §8 query reads it** — the human-readable
+  // range the UI wants is already carried on RESOLVES_TO. Skipped by default;
+  // set KESSLER_LOAD_DECLARES=1 to include it.
+  if (process.env.KESSLER_LOAD_DECLARES === '1') {
+    total += await loadEdges(
+      'declares.jsonl',
+      'DECLARES',
+      ids,
+      (row) => ({
+        from: row.from,
+        to: row.to,
+        props: { range: row.range, dep_type: row.dep_type },
+      }),
+      ['Version', 'Package']
+    );
+  } else {
+    console.log(`${'DECLARES'.padEnd(16)} skipped (set KESSLER_LOAD_DECLARES=1 to include)`);
+  }
   total += await loadEdges(
     'resolves_to.jsonl',
     'RESOLVES_TO',
@@ -176,7 +225,7 @@ async function loadVertices(file, label, ids, shape) {
 
   const flush = async () => {
     if (!batch.length) return;
-    await db.run(query, { rows: batch });
+    await writeBatch(db, query, batch);
     written += batch.length;
     batch = [];
     report(written);
@@ -225,7 +274,7 @@ async function loadEdges(file, type, ids, shape, labels) {
 
   const flush = async () => {
     if (!batch.length) return;
-    await db.run(query, { rows: batch });
+    await writeBatch(db, query, batch);
     written += batch.length;
     batch = [];
     report(written);

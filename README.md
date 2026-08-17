@@ -160,10 +160,17 @@ export GRAPH_ADVERTISED_BOLT_ADDR=127.0.0.1:7687
 export GRAPH_DATA_CACHE_DIR="$PWD/.hydradb/cache"
 export GRAPH_AUTH_TOKEN_FILE="$PWD/.hydradb/auth-token"
 export GRAPH_ALLOW_PLAINTEXT=true
+export GRAPH_MAX_QUERY_RUNTIME_MS=300000
 export RUST_MIN_STACK=33554432
 
 cargo run --locked --features server-runtime --bin graph-node
 ```
+
+`GRAPH_MAX_QUERY_RUNTIME_MS` matters for the bulk load. Each edge row MATCHes two
+vertices, so batches slow down as the graph fills, and past roughly 100k edges a
+batch exceeds the 30s default — admission control then refuses the longer runtime
+the loader asks for rather than granting it. The loader also halves any batch
+that times out, so it will finish either way, just slowly.
 
 The node holds the foreground — that is it working, not hanging. Ports: Bolt `7687`, HTTP `8443`, admin `9090`. The first build is a long cold compile (~25 min).
 

@@ -17,6 +17,7 @@ export const CONCURRENCY = num('KESSLER_CONCURRENCY', 12);
 // a bounded graph we can defend beats a half-ingested one we cannot.
 export const MAX_DEPTH = num('KESSLER_MAX_DEPTH', 3);
 export const MAX_PACKAGES = num('KESSLER_MAX_PACKAGES', 8000);
+export const BATCH = num('KESSLER_BATCH', 1000); // measured: 4,608 rows/s vs 1,174 at 100
 
 // Full packuments carry every version ever published; babel and typescript-adjacent
 // packages run to several hundred. Keeping all of them multiplies into millions of
