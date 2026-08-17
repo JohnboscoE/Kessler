@@ -90,8 +90,9 @@ is the durable source of truth (SlateDB). Speaks **Bolt 5.x (Neo4j-driver compat
 | All five §8 queries | **VERIFIED** | Aug 16, 9/9 forms pass `node api/probe-queries.mjs`. Q2's `RESOLVES_TO*1..6` bounded variable-length **is** supported — no fallback to SSpaths needed |
 | Property index creation syntax | **ANSWERED — no DDL exists** | Aug 15. Zero `CREATE INDEX`/`DROP INDEX` in the Rust source; zero mentions of "index" in `cypher-compat.md`. Indexes are not user-declared: `architecture.md:121` lists "vertex and relationship property indexes" as canonical SlateDB records, and `graph-indexer` builds immutable traversal indexes in the background. **There is nothing to create — the §3.5 worry is void.** New question it raises: whether `graph-indexer` must also run locally for `algo.MSpaths` source resolution to be fast, or whether `graph-node` alone suffices. Test during 5.3 |
 | Vector / embedding support | **VERIFIED ABSENT** | Aug 15. `embedding` 0 hits, `hnsw` 0, `cosine` 0. All 155 `vector` hits are GraphBLAS sparse linear algebra (`GrB_Vector`, `GrBVector`, `degree_vector`) — traversal internals, unrelated to similarity search. The marketing site's hybrid vector+graph claim is not in the OSS repo. Kessler does not need it |
-| UNWIND batch write throughput | UNVERIFIED | Determines ingest ceiling. Benchmark at batch sizes 100 / 500 / 1000 |
-| Max practical graph size on one node | UNVERIFIED | Start at 1k packages, scale up, record where it degrades |
+| UNWIND batch write throughput | **VERIFIED** | Aug 17. Batch size is hard-capped at **1024** by `DEFAULT_MAX_PARAMETERS` in `src/client/service.rs:37`, which is not wired to any config — anything larger is refused as `client_query_batch_items`. Vertex upserts ~4,600 rows/s at batch 1000 (vs 1,174 at batch 100). Edge writes are far slower because each row MATCHes two vertices: **88 rows/s sustained** over 15,000 edges against an 86k-vertex graph, with no decay across rounds |
+| Max practical graph size on one node | **VERIFIED at this scale** | Aug 17. 4,765 packages / 86,024 versions / 224,533 RESOLVES_TO edges loads and queries fine. Traversals stay sub-second; `algo.MSpaths` over 156 sources returns in ~1s. **What degrades is full label scans** — `MATCH (n:Version) RETURN count(*)` times out at 86k nodes, so avoid them; indexed `{id: ...}` lookups stay at 14-90ms |
+| Query runtime ceiling | **VERIFIED — configurable** | Aug 17. Defaults to 30s and admission control **refuses** a longer `timeout_ms` rather than clamping it (`client_query_runtime_ms rejected`). Raise on the node with `GRAPH_MAX_QUERY_RUNTIME_MS`. The loader also halves any batch that times out, so it completes either way |
 
 ### 3.3 Query surface — VERIFIED from README
 
@@ -315,7 +316,7 @@ Rust graph database's build system.
    popular package.
 
    > **Was blocked, now solved — Aug 15.** The original design compared popular names
-   > against packages in our own graph and could not work: the crawl walks the *dependency
+   > against packages in the ingested graph and could not work: the crawl walks the *dependency
    > closure* of popular seeds, so everything in it is a package something depends on,
    > while a typosquat is definitionally a package nobody depends on. It produced one edge
    > across 144,359 comparisons and that edge was a false positive.
@@ -630,7 +631,7 @@ in Section 3.2.
     * Typosquat detection is structurally blocked, not buggy — see §6.1 item 5.
 - Model/plan changes:
     * MAX_VERSIONS truncation keeps the NEWEST n versions, which actively fights
-      point-in-time resolution: old dependents need old targets we did not keep. That is
+      point-in-time resolution: old dependents need old targets that were not kept. That is
       why point-in-time scores 10 points lower. If point-in-time ships, the version
       selection policy has to change with it.
     * Landing page and instrument split into two surfaces so the landing can animate

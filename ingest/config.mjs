@@ -14,14 +14,14 @@ export const CONCURRENCY = num('KESSLER_CONCURRENCY', 12);
 
 // BFS bounds. KESSLER.md §6.3 targets 5,000-10,000 packages; these are the knobs
 // that keep it there. Every one of them is a stated limitation in the README —
-// a bounded graph we can defend beats a half-ingested one we cannot.
+// a bounded graph that can be defended beats a half-ingested one that cannot.
 export const MAX_DEPTH = num('KESSLER_MAX_DEPTH', 3);
 export const MAX_PACKAGES = num('KESSLER_MAX_PACKAGES', 8000);
 export const BATCH = num('KESSLER_BATCH', 1000); // measured: 4,608 rows/s vs 1,174 at 100
 
 // Full packuments carry every version ever published; babel and typescript-adjacent
 // packages run to several hundred. Keeping all of them multiplies into millions of
-// RESOLVES_TO edges. We keep the most recent N stable releases per package.
+// RESOLVES_TO edges. Only the most recent N stable releases are kept per package.
 export const MAX_VERSIONS_PER_PACKAGE = num('KESSLER_MAX_VERSIONS', 50);
 export const INCLUDE_PRERELEASE = bool('KESSLER_PRERELEASE', false);
 

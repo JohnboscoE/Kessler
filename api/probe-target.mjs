@@ -29,7 +29,7 @@ console.log(`ingested in ${ingested.ms}ms (${ingested.alreadyPresent} already pr
 const sourceKeys = graph.versions.map((v) => v.key);
 
 // Candidates: anything something in this tree depends on. Ranked by inbound
-// degree first so we probe the plausible ones.
+// degree first, so the plausible ones are probed first.
 const inbound = new Map();
 for (const e of graph.edges) inbound.set(e.to, (inbound.get(e.to) ?? 0) + 1);
 const candidates = [...inbound.entries()].sort((a, b) => b[1] - a[1]).slice(0, 40);

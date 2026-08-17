@@ -2,13 +2,13 @@
  * Stage 4 — SIMILAR_NAME edges, registry-backed.
  *
  * The first version of this stage compared popular names against the packages in
- * our own graph and was structurally incapable of working: the crawl walks the
+ * the dependency graph and was structurally incapable of working: the crawl walks
  * dependency closure of popular seeds, so every package in it is one that
  * something depends on, while a typosquat is by definition a package nobody
  * depends on. It produced one edge across 144,359 comparisons, and that edge was
  * a false positive.
  *
- * So the direction is inverted. For each popular package we *generate* the names
+ * So the direction is inverted. For each popular package Kessler *generates* the names
  * a human plausibly mistypes (see squat-names.mjs), ask the registry which of
  * them are actually published, and keep the ones that are. A published package
  * one keystroke from `lodash` that nobody has ever downloaded is the signal.

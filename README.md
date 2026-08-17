@@ -147,9 +147,9 @@ Both figures below are measured on the current 600-package build. Two strategies
 - **`point-in-time`** (current build) — resolve each range only against versions published at or before the dependent's own publish time. Historically accurate: it reconstructs what `npm install` would actually have produced the day that version shipped. Resolution rate **79.8%**.
 - **`latest-satisfying-now`** — resolve against every version held. Simpler, and slightly wrong: it can resolve a 2019 release to a 2024 dependency that did not exist yet. Resolution rate **89.3%**.
 
-The gap between them is honest, not noise. Part of it is genuine (old ranges with no satisfying version at the time), and part is an artefact of the version cap: we keep the *newest* 50 versions, while point-in-time needs *older* ones. Raising `KESSLER_MAX_VERSIONS` narrows the gap.
+The gap between them is honest, not noise. Part of it is genuine (old ranges with no satisfying version at the time), and part is an artefact of the version cap, which keeps the *newest* versions while point-in-time needs *older* ones. Raising `KESSLER_MAX_VERSIONS` narrows the gap.
 
-### A limitation we did not paper over
+### A limitation I did not paper over
 
 The typosquat feature cannot work by scanning the dependency graph, because the crawl walks the dependency closure of popular packages and a typosquat is by definition a package **nobody depends on**. The first implementation produced one edge across 144,359 comparisons, and that edge was a false positive.
 
@@ -250,7 +250,7 @@ DESIGN.md   the visual system
 
 ---
 
-## What we learned about HydraDB's Cypher subset
+## What I learned about HydraDB's Cypher subset
 
 Recorded because most of it is not in the documentation, and because every one of these was discovered by hitting it. Full detail in `KESSLER.md` §3.2.
 

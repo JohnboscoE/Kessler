@@ -2,9 +2,9 @@
  * Typo generation.
  *
  * Produces the names a human plausibly types when they mean `name`. This is the
- * half of typosquat detection that cannot come from our own graph: a squat is by
+ * half of typosquat detection that cannot come from the dependency graph: a squat is by
  * definition a package nobody depends on, so it is never in the dependency
- * closure we crawled. We have to guess the names and ask the registry.
+ * closure crawled. The names have to be guessed and checked against the registry.
  *
  * Every generator is a documented attack class, and each candidate carries the
  * class that produced it so the UI can say *why* a name is suspicious.
@@ -15,7 +15,7 @@
 const ROWS = ['1234567890', 'qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
 const ADJACENT = buildAdjacency(ROWS);
 
-// npm's own name rules, minus the ones we cannot violate by construction.
+// npm's own name rules, minus the ones that cannot be violated by construction.
 const VALID = /^(?:@[a-z0-9-._]+\/)?[a-z0-9-._]+$/;
 
 export const MIN_LENGTH_FOR_CHAR_TYPOS = 5;

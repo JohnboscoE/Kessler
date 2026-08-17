@@ -95,7 +95,7 @@ app.post('/scan', async (request, reply) => {
 
   // On-demand ingest. A lockfile is already a fully resolved graph, so an
   // uploaded one can be merged in directly — no registry calls, no semver work.
-  // Without this, an arbitrary lockfile mostly misses our crawl and the honest
+  // Without this, an arbitrary lockfile mostly misses the crawl and the honest
   // answer would be "not in the graph" rather than a result.
   let ingested = null;
   if (ingest) {
@@ -104,8 +104,8 @@ app.post('/scan', async (request, reply) => {
       const allocator = await IdAllocator.load();
       ingested = await ingestLockfileGraph(db, graph, allocator);
     } catch (err) {
-      // v1 lockfiles and malformed trees are not fatal — we can still answer
-      // over whatever the crawl already covers, and we say so.
+      // v1 lockfiles and malformed trees are not fatal — the scan can still
+      // answer over whatever the crawl already covers, and says so.
       request.log.warn({ err }, 'lockfile ingest skipped');
       ingested = { skipped: String(err.message ?? err) };
     }

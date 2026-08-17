@@ -48,7 +48,7 @@ async function writeBatch(db, query, rows) {
     await db.run(query, { rows }, { timeoutMs: TIMEOUT_MS });
   } catch (err) {
     // 408 = the query ran out of time. 429 with resource_exhausted = admission
-    // control refused the runtime we asked for, which a smaller batch also fixes.
+    // control refused the runtime requested, which a smaller batch also fixes.
     const timedOut =
       err instanceof HydraError && (err.status === 408 || /resource_exhausted/.test(err.message));
     if (!timedOut || rows.length === 1) throw err;

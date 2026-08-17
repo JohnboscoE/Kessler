@@ -1,8 +1,8 @@
 /**
  * On-demand ingest: merge an uploaded lockfile's subgraph into HydraDB.
  *
- * This is what turns Kessler from "does our crawl happen to cover you" into
- * "drop any lockfile and we answer over your graph". The lockfile already
+ * This is what turns Kessler from "does the crawl happen to cover you" into
+ * "drop any lockfile and Kessler answers over your graph". The lockfile already
  * carries a fully resolved tree (see lockfile-graph.mjs), so no registry calls
  * and no semver evaluation are needed — just id allocation and a batched write.
  *

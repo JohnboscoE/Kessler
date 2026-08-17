@@ -9,7 +9,7 @@
  *
  * Cached documents are trimmed to the fields Kessler models. A full packument for
  * a package like @babel/core is several megabytes of README, dist metadata, and
- * per-version tarball hashes we never read.
+ * per-version tarball hashes Kessler never reads.
  */
 import semver from 'semver';
 import fsp from 'node:fs/promises';
@@ -177,7 +177,7 @@ async function fetchPackument(name) {
 
 /**
  * A cache entry is only reusable if it was trimmed under bounds at least as wide
- * as the ones we are asking for now. Without this check, raising MAX_VERSIONS
+ * as the ones being asked for now. Without this check, raising MAX_VERSIONS
  * would appear to succeed while silently reusing narrower files — the resulting
  * graph would be missing versions with no error anywhere to explain why.
  */

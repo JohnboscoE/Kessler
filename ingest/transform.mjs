@@ -31,7 +31,7 @@ async function main() {
   // Pass 1: which packages exist in the graph at all. DECLARES edges pointing
   // outside this set are dropped rather than creating version-less stub nodes —
   // dev dependencies are recorded but never expanded, so they routinely point
-  // at packages we deliberately did not fetch.
+  // at packages deliberately not fetched.
   const known = new Set();
   for (const file of files) {
     const doc = await readJson(path.join(RAW_DIR, file));

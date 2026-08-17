@@ -301,7 +301,7 @@ function Result({ state }: { state: State }) {
 }
 
 /**
- * Coverage is stated, never implied. "No path found" and "we only knew about
+ * Coverage is stated, never implied. "No path found" and "only part of your
  * half your dependencies" are different answers, and on a security readout the
  * difference matters more than the tidiness of hiding it.
  */
