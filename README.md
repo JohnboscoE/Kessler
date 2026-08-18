@@ -223,10 +223,15 @@ The node holds the foreground — that is it working, not hanging. Ports: Bolt `
 ### 2. Build the graph
 
 ```bash
-npm install
-npm run ingest      # fetch -> transform -> resolve -> typosquat
+npm install                  # root — the ingest pipeline
+npm install --prefix api     # the Fastify API
+npm install --prefix web     # the Vite + React front end
+
+npm run ingest               # fetch -> transform -> resolve -> typosquat
 node ingest/load.mjs
 ```
+
+There are three `package.json` files and **no npm workspace**, so all three installs are required. A root-only `npm install` pulls `semver` and nothing else, and `npm run api` then fails with `ERR_MODULE_NOT_FOUND`.
 
 Each stage is independently re-runnable and every network result is cached under `data/raw/`, so re-running the transform or the resolver never re-fetches. `npm run stats` reports the shape of what you built.
 
@@ -288,9 +293,12 @@ Because `sourceValues` must be inlined rather than parameterised, every key is v
 ## Attribution
 
 - Package metadata from the [npm registry](https://registry.npmjs.org) public packument API, and download counts from `api.npmjs.org`. No authentication, no scraping.
-- Semver range resolution by [`semver`](https://www.npmjs.com/package/semver).
+- Semver range resolution by [`semver`](https://www.npmjs.com/package/semver) — the only runtime dependency of the ingest pipeline.
 - Graph storage and traversal by [HydraDB](https://github.com/hydra-db/hydradb).
-- Front end: React, Vite. API: Fastify.
+- API: [Fastify](https://fastify.dev) with [`@fastify/cors`](https://github.com/fastify/fastify-cors).
+- Front end: [React](https://react.dev) and [React DOM](https://react.dev), built with [Vite](https://vite.dev) and [`@vitejs/plugin-react`](https://github.com/vitejs/vite-plugin-react), type-checked with [TypeScript](https://www.typescriptlang.org) against `@types/react` and `@types/react-dom`.
+
+That is the complete direct-dependency set — four runtime packages (`semver`, `fastify`, `@fastify/cors`, `react`/`react-dom`) and five build-time ones. Everything else in `node_modules` is transitive.
 
 ---
 
