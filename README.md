@@ -8,6 +8,8 @@ Named for Kessler syndrome — one collision in orbit produces debris that cause
 
 Built for Hack Hydra, Track 02 — *Repos, dependencies and code as graphs*.
 
+> **About the hosted page.** The deployed build has no API behind it — the graph needs a self-hosted HydraDB node, which a static deploy cannot carry. It therefore **replays a recorded traversal for the one lockfile it bundles**, labelled as recorded, and answers nothing else: upload your own `package-lock.json` there and it will tell you it cannot reach the API rather than show you someone else's findings. For a real analysis of your own tree, run it locally — [Running it](#running-it) is four commands.
+
 ---
 
 ## The problem

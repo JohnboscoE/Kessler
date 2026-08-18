@@ -273,6 +273,19 @@ function Result({ state }: { state: State }) {
   return (
     <div className="panel">
       <div className="label">Result</div>
+
+      {/* A replayed result must never read as a live traversal. This says so
+          before the finding itself, not in small print underneath it. */}
+      {result.recorded && (
+        <p className="data panel__empty">
+          Recorded result — no API is reachable, so this is a traversal captured on{' '}
+          {new Date(result.recorded.at).toISOString().slice(0, 10)} against a graph of{' '}
+          {result.recorded.graph.packages.toLocaleString()} packages and{' '}
+          {result.recorded.graph.edges.toLocaleString()} resolved edges. It is replayed only for
+          the bundled example; any other lockfile needs the API running.
+        </p>
+      )}
+
       <p className={clear ? 'data' : 'data data--breach'}>
         {clear
           ? `No path found within ${result.maxDepth} hops.`

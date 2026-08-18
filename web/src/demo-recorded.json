@@ -1,0 +1,2013 @@
+{
+  "recordedAt": "2026-08-18T13:08:11.958Z",
+  "graph": {
+    "packages": 4765,
+    "versions": 86024,
+    "edges": 224533
+  },
+  "lockfileHash": "71c5815e",
+  "scans": {
+    "function-bind@1.1.2": {
+      "compromised": "function-bind@1.1.2",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 15,
+      "maxDepth": 6,
+      "elapsedMs": 1728,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1580
+      },
+      "paths": [
+        {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "hasown@2.0.4",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.1",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.2.5",
+            "function-bind@1.1.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.1",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.2.6",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "hasown@2.0.4",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "hasown@2.0.4",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.2.5",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.2.5",
+            "function-bind@1.1.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "call-bind-apply-helpers@1.0.2",
+            "function-bind@1.1.2"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "hasown@2.0.4",
+            "function-bind@1.1.2"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "gopd@1.2.0": {
+      "compromised": "gopd@1.2.0",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 13,
+      "maxDepth": 6,
+      "elapsedMs": 1035,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1543
+      },
+      "paths": [
+        {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "gopd@1.2.0"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "gopd@1.2.0"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.2.6",
+            "dunder-proto@1.0.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.2.6",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.2.5",
+            "gopd@1.2.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.2.6",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.2.5",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.2.5",
+            "gopd@1.2.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "dunder-proto@1.0.1",
+            "gopd@1.2.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "call-bind-apply-helpers@1.0.2": {
+      "compromised": "call-bind-apply-helpers@1.0.2",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 13,
+      "maxDepth": 6,
+      "elapsedMs": 857,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1545
+      },
+      "paths": [
+        {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "hasown@2.0.4": {
+      "compromised": "hasown@2.0.4",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 11,
+      "maxDepth": 6,
+      "elapsedMs": 831,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1558
+      },
+      "paths": [
+        {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "hasown@2.0.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "hasown@2.0.4"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "es-errors@1.3.0": {
+      "compromised": "es-errors@1.3.0",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 16,
+      "maxDepth": 6,
+      "elapsedMs": 1487,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1566
+      },
+      "paths": [
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.1",
+            "side-channel@1.1.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-list@1.0.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.2",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "dunder-proto@1.0.1",
+            "call-bind-apply-helpers@1.0.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.2.6",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "call-bind-apply-helpers@1.0.2",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "get-proto@1.0.1",
+            "dunder-proto@1.0.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "get-proto@1.0.1",
+            "es-object-atoms@1.1.2",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.2.5",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.2.5",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-list@1.0.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "call-bind-apply-helpers@1.0.2",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "dunder-proto@1.0.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "es-object-atoms@1.1.2",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "get-intrinsic@1.3.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel-list@1.0.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "es-errors@1.3.0"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "get-intrinsic@1.3.0": {
+      "compromised": "get-intrinsic@1.3.0",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 10,
+      "maxDepth": 6,
+      "elapsedMs": 830,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1958
+      },
+      "paths": [
+        {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "call-bound@1.0.4",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "es-set-tostringtag@2.1.0",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "ms@2.1.3": {
+      "compromised": "ms@2.1.3",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 10,
+      "maxDepth": 6,
+      "elapsedMs": 6422,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1573
+      },
+      "paths": [
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "https-proxy-agent@5.0.1",
+            "agent-base@6.0.2",
+            "debug@4.4.3",
+            "ms@2.1.3"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "axios@1.19.0",
+            "https-proxy-agent@5.0.1",
+            "debug@4.4.3",
+            "ms@2.1.3"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "serve-static@1.16.3",
+            "send@0.19.2",
+            "ms@2.1.3"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "https-proxy-agent@5.0.1",
+            "agent-base@6.0.2",
+            "debug@4.4.3",
+            "ms@2.1.3"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "winston@3.19.0",
+            "winston-transport@4.9.0",
+            "logform@2.7.0",
+            "ms@2.1.3"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "agent-base@6.0.2",
+            "debug@4.4.3",
+            "ms@2.1.3"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "send@0.19.2",
+            "ms@2.1.3"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "https-proxy-agent@5.0.1",
+            "debug@4.4.3",
+            "ms@2.1.3"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "serve-static@1.16.3",
+            "send@0.19.2",
+            "ms@2.1.3"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "serve-static@1.16.3",
+            "send@0.19.1",
+            "ms@2.1.3"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "winston-transport@4.9.0",
+            "logform@2.7.0",
+            "ms@2.1.3"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "winston@3.19.0",
+            "logform@2.7.0",
+            "ms@2.1.3"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "debug@4.4.3",
+            "ms@2.1.3"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "logform@2.7.0",
+            "ms@2.1.3"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "send@0.19.2",
+            "ms@2.1.3"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "color-name@2.1.1": {
+      "compromised": "color-name@2.1.1",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 6,
+      "maxDepth": 6,
+      "elapsedMs": 414,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1566
+      },
+      "paths": [
+        {
+          "nodes": [
+            "winston@3.19.0",
+            "@dabh/diagnostics@2.0.8",
+            "@so-ric/colorspace@1.1.6",
+            "color@5.0.3",
+            "color-convert@3.1.3",
+            "color-name@2.1.1"
+          ],
+          "depth": 5
+        },
+        {
+          "nodes": [
+            "@dabh/diagnostics@2.0.8",
+            "@so-ric/colorspace@1.1.6",
+            "color@5.0.3",
+            "color-convert@3.1.3",
+            "color-name@2.1.1"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "@dabh/diagnostics@2.0.8",
+            "@so-ric/colorspace@1.1.6",
+            "color@5.0.3",
+            "color-string@2.1.4",
+            "color-name@2.1.1"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "@so-ric/colorspace@1.1.6",
+            "color@5.0.3",
+            "color-convert@3.1.3",
+            "color-name@2.1.1"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "@so-ric/colorspace@1.1.6",
+            "color@5.0.3",
+            "color-string@2.1.4",
+            "color-name@2.1.1"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "color@5.0.3",
+            "color-convert@3.1.3",
+            "color-name@2.1.1"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "color@5.0.3",
+            "color-string@2.1.4",
+            "color-name@2.1.1"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "color-convert@3.1.3",
+            "color-name@2.1.1"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "color-string@2.1.4",
+            "color-name@2.1.1"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "object-inspect@1.13.4": {
+      "compromised": "object-inspect@1.13.4",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 7,
+      "maxDepth": 6,
+      "elapsedMs": 532,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1568
+      },
+      "paths": [
+        {
+          "nodes": [
+            "express@4.22.2",
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-list@1.0.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "side-channel-map@1.0.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "side-channel-list@1.0.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "side-channel-list@1.0.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel-map@1.0.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel-weakmap@1.0.2",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "side-channel@1.1.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 1
+        }
+      ]
+    },
+    "safe-buffer@5.2.1": {
+      "compromised": "safe-buffer@5.2.1",
+      "sources": 156,
+      "packages": 152,
+      "devSkipped": 0,
+      "exposedCount": 6,
+      "maxDepth": 6,
+      "elapsedMs": 2924,
+      "coverage": {
+        "total": 156,
+        "inGraph": 156,
+        "missing": [],
+        "missingCount": 0
+      },
+      "ingested": {
+        "versionsWritten": 156,
+        "packagesWritten": 152,
+        "edgesWritten": 227,
+        "alreadyPresent": 156,
+        "ms": 1563
+      },
+      "paths": [
+        {
+          "nodes": [
+            "winston@3.19.0",
+            "winston-transport@4.9.0",
+            "readable-stream@3.6.2",
+            "string_decoder@1.3.0",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 4
+        },
+        {
+          "nodes": [
+            "winston-transport@4.9.0",
+            "readable-stream@3.6.2",
+            "string_decoder@1.3.0",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "winston@3.19.0",
+            "readable-stream@3.6.2",
+            "string_decoder@1.3.0",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 3
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "content-disposition@0.5.4",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "readable-stream@3.6.2",
+            "string_decoder@1.3.0",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 2
+        },
+        {
+          "nodes": [
+            "content-disposition@0.5.4",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "express@4.22.2",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 1
+        },
+        {
+          "nodes": [
+            "string_decoder@1.3.0",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 1
+        }
+      ]
+    }
+  },
+  "chokepoints": {
+    "totalVersions": 156,
+    "chokepoints": [
+      {
+        "target": "function-bind@1.1.2",
+        "reachedBy": 15,
+        "paths": 27,
+        "maxDepth": 5,
+        "deepPaths": 11,
+        "score": 123,
+        "deepest": {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "function-bind@1.1.2"
+          ],
+          "depth": 5
+        }
+      },
+      {
+        "target": "gopd@1.2.0",
+        "reachedBy": 13,
+        "paths": 24,
+        "maxDepth": 5,
+        "deepPaths": 14,
+        "score": 120,
+        "deepest": {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "gopd@1.2.0"
+          ],
+          "depth": 5
+        }
+      },
+      {
+        "target": "call-bind-apply-helpers@1.0.2",
+        "reachedBy": 13,
+        "paths": 22,
+        "maxDepth": 5,
+        "deepPaths": 12,
+        "score": 114,
+        "deepest": {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "call-bound@1.0.4",
+            "call-bind-apply-helpers@1.0.2"
+          ],
+          "depth": 5
+        }
+      },
+      {
+        "target": "hasown@2.0.4",
+        "reachedBy": 11,
+        "paths": 22,
+        "maxDepth": 5,
+        "deepPaths": 13,
+        "score": 105,
+        "deepest": {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0",
+            "hasown@2.0.4"
+          ],
+          "depth": 5
+        }
+      },
+      {
+        "target": "es-errors@1.3.0",
+        "reachedBy": 16,
+        "paths": 31,
+        "maxDepth": 3,
+        "deepPaths": 6,
+        "score": 82,
+        "deepest": {
+          "nodes": [
+            "axios@1.19.0",
+            "form-data@4.0.6",
+            "es-set-tostringtag@2.1.0",
+            "es-errors@1.3.0"
+          ],
+          "depth": 3
+        }
+      },
+      {
+        "target": "get-intrinsic@1.3.0",
+        "reachedBy": 10,
+        "paths": 17,
+        "maxDepth": 4,
+        "deepPaths": 7,
+        "score": 71,
+        "deepest": {
+          "nodes": [
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "side-channel-map@1.0.1",
+            "get-intrinsic@1.3.0"
+          ],
+          "depth": 4
+        }
+      },
+      {
+        "target": "ms@2.1.3",
+        "reachedBy": 10,
+        "paths": 15,
+        "maxDepth": 4,
+        "deepPaths": 5,
+        "score": 65,
+        "deepest": {
+          "nodes": [
+            "axios@1.19.0",
+            "https-proxy-agent@5.0.1",
+            "agent-base@6.0.2",
+            "debug@4.4.3",
+            "ms@2.1.3"
+          ],
+          "depth": 4
+        }
+      },
+      {
+        "target": "color-name@2.1.1",
+        "reachedBy": 6,
+        "paths": 9,
+        "maxDepth": 5,
+        "deepPaths": 5,
+        "score": 51,
+        "deepest": {
+          "nodes": [
+            "winston@3.19.0",
+            "@dabh/diagnostics@2.0.8",
+            "@so-ric/colorspace@1.1.6",
+            "color@5.0.3",
+            "color-convert@3.1.3",
+            "color-name@2.1.1"
+          ],
+          "depth": 5
+        }
+      },
+      {
+        "target": "object-inspect@1.13.4",
+        "reachedBy": 7,
+        "paths": 11,
+        "maxDepth": 4,
+        "deepPaths": 4,
+        "score": 47,
+        "deepest": {
+          "nodes": [
+            "express@4.22.2",
+            "body-parser@1.20.6",
+            "qs@6.15.3",
+            "side-channel@1.1.1",
+            "object-inspect@1.13.4"
+          ],
+          "depth": 4
+        }
+      },
+      {
+        "target": "safe-buffer@5.2.1",
+        "reachedBy": 6,
+        "paths": 8,
+        "maxDepth": 4,
+        "deepPaths": 3,
+        "score": 39,
+        "deepest": {
+          "nodes": [
+            "winston@3.19.0",
+            "winston-transport@4.9.0",
+            "readable-stream@3.6.2",
+            "string_decoder@1.3.0",
+            "safe-buffer@5.2.1"
+          ],
+          "depth": 4
+        }
+      }
+    ]
+  }
+}
