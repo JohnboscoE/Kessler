@@ -1,6 +1,8 @@
 # Kessler
 
-**Drop in your `package-lock.json`, name a compromised package, and Kessler returns every transitive path from your dependencies to it.**
+**Drop in your `package-lock.json`, name a compromised package, and Kessler returns every resolved transitive path from your dependencies to it.**
+
+*"Resolved" is load-bearing.* Kessler walks concrete version→version edges built at ingest, and **89.7%** of the dependency ranges in the graph resolve to one. The remainder — git URLs, `file:` and `workspace:` protocols, and ranges with no satisfying version in the build — have no edge to walk, so no path through them can be reported. The exact figure and what it excludes are in [Honest bounds](#honest-bounds).
 
 Named for Kessler syndrome — one collision in orbit produces debris that causes more collisions, until the whole orbital shell is unusable. That is the npm supply-chain failure mode exactly: one compromised package cascades transitively through a dependency graph until hundreds of unrelated services are exposed.
 

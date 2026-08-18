@@ -51,7 +51,7 @@ const CAPABILITIES = [
   {
     label: 'Blast radius',
     title: 'Every path, not just the direct hit',
-    body: 'Name a compromised package and Kessler returns every transitive path from your direct dependencies to it, bounded at six hops. One server-side traversal across every source in your lockfile at once.',
+    body: 'Name a compromised package and Kessler returns every resolved transitive path from your direct dependencies to it, bounded at six hops. One server-side traversal across every source in your lockfile at once.',
   },
   {
     label: 'Introduction point',
