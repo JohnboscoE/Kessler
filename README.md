@@ -184,6 +184,29 @@ Download counts are **graded, not thresholded**, because the signal is genuinely
 - **Rust 1.91+**, and: `build-essential clang libclang-dev cmake pkg-config libcypher-parser-dev libgraphblas-dev`
 - **Node 20+**
 - **`RUST_MIN_STACK=33554432` is not optional.** Without it the node answers `/readyz` and then aborts with a stack overflow on the first query.
+- **No HydraDB account or API key is required.** Kessler runs against a self-hosted `graph-node` and authenticates with a local bearer token you generate yourself (`.hydradb/auth-token`). If you have found a signup page that issues an `sk_live_…` key and asks you to ingest a file, that is HydraDB's **managed cloud** — a different product that shares the name. Its API takes a natural-language `query` with `type`/`mode`/`maxResults` and exposes no Cypher, no `UNWIND`, and no `algo.*` procedures, so it cannot run any query in this project. Nothing here reads an API key.
+
+---
+
+## Quick start for reviewers
+
+The full pipeline below builds a 4,765-package crawl, and its typosquat stage takes hours. **You do not need it to evaluate this project.** A lockfile is already a fully resolved graph, so Kessler merges an uploaded one straight into the database — which means **blast-radius analysis of your own tree does not depend on how large the crawl is.** The crawl supplies surrounding context (maintainer overlap, typosquat neighbours, packages beyond your tree), not the ability to traverse your lockfile.
+
+Verified: a lockfile whose packages appear nowhere in the crawl (`alreadyPresent: 0`) is ingested and traversed correctly, returning paths built purely from its own edges.
+
+So build a small graph instead. Steps 1, 3 and 4 below are unchanged; only the ingest shrinks:
+
+```bash
+KESSLER_MAX_PACKAGES=600 KESSLER_MAX_DEPTH=2 npm run fetch
+npm run transform
+npm run resolve
+KESSLER_SQUAT_TARGETS=20 npm run typosquat
+node ingest/load.mjs
+```
+
+Then upload your own `package-lock.json` at `http://localhost:5173` and name any package in it. Everything the lockfile reaches is traversable; `GET /coverage` reports what the crawl adds on top.
+
+Two honest notes on timing. The **~25 minute cold Rust compile in step 1 is irreducible** — it is upstream, not this project. And the load stage scales with the graph: the full 224,533-edge build takes ~18 minutes, so a 600-package crawl is proportionally faster.
 
 ---
 
