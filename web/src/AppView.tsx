@@ -38,7 +38,10 @@ export function AppView({ onBack }: { onBack: () => void }) {
   const [state, setState] = useState<State>({ status: 'idle' });
   const [cover, setCover] = useState<Coverage | null>(null);
   const [known, setKnown] = useState<Incident[]>([]);
-  const [chokes, setChokes] = useState<ChokePoint[] | 'loading' | null>(null);
+  // `null` is "not asked yet". A failure carries its reason, because a silent
+  // reset is indistinguishable from never having clicked — which is exactly how
+  // this endpoint's failures used to present.
+  const [chokes, setChokes] = useState<ChokePoint[] | 'loading' | null | { error: string }>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -56,8 +59,18 @@ export function AppView({ onBack }: { onBack: () => void }) {
     try {
       const r = await fetchChokepoints(lockfile.text);
       setChokes(r.chokepoints);
-    } catch {
-      setChokes(null);
+    } catch (err) {
+      // "Could not ask" and "found nothing" are different answers, and the user
+      // is entitled to know which one they got.
+      const api = err as ApiError;
+      setChokes({
+        error:
+          api.kind === 'offline'
+            ? 'Could not ask — no API is reachable. This page can only analyse the bundled example; run Kessler locally to analyse your own lockfile.'
+            : api.kind === 'database'
+              ? 'The graph database is not answering, so no traversal ran. This is not a clear result.'
+              : (api.message ?? 'Could not analyse this lockfile.'),
+      });
     }
   }, [lockfile]);
 
@@ -199,6 +212,15 @@ export function AppView({ onBack }: { onBack: () => void }) {
             <button type="button" className="btn btn--quiet" onClick={() => void findChokepoints()}>
               {chokes === 'loading' ? 'Traversing…' : 'Analyse this lockfile'}
             </button>
+            {chokes !== null && chokes !== 'loading' && !Array.isArray(chokes) && (
+              <p className="data panel__empty">{chokes.error}</p>
+            )}
+            {Array.isArray(chokes) && chokes.length === 0 && (
+              <p className="data panel__empty">
+                No choke points found — nothing in this lockfile is reached by enough of your tree
+                to rank within 6 hops.
+              </p>
+            )}
             {Array.isArray(chokes) && chokes.length > 0 && (
               <ul className="chokes">
                 {chokes.map((c) => (
