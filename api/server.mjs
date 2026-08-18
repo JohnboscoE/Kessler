@@ -214,8 +214,20 @@ app.post('/chokepoints', async (request, reply) => {
     return reply.code(400).send({ error: 'lockfile contained no resolved dependencies' });
   }
 
-  const allocator = await IdAllocator.load();
-  const ingested = await ingestLockfileGraph(db, graph, allocator);
+  // Same on-demand ingest as /scan, and guarded the same way. An unguarded
+  // call here meant a store that refuses writes turned the whole endpoint into
+  // a 502, while /scan degraded quietly — one uploaded lockfile, two different
+  // answers. Ranking works over whatever the crawl already covers, so a failed
+  // ingest narrows the result rather than destroying it, and `ingested.skipped`
+  // says so in the response.
+  let ingested = null;
+  try {
+    const allocator = await IdAllocator.load();
+    ingested = await ingestLockfileGraph(db, graph, allocator);
+  } catch (err) {
+    request.log.warn({ err }, 'lockfile ingest skipped');
+    ingested = { skipped: String(err.message ?? err) };
+  }
 
   const inbound = new Map();
   for (const edge of graph.edges) inbound.set(edge.to, (inbound.get(edge.to) ?? 0) + 1);
