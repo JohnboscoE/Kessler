@@ -91,6 +91,21 @@ RETURN path
 
 The traversal is evaluated **server-side, across all sources together**, on HydraDB's GraphBLAS-backed engine. The alternative — and the thing `api/server.mjs`'s `/benchmark` endpoint measures against it — is `algo.SPpaths` once per source: N round trips, N traversals, N result sets to merge on the client.
 
+#### Measured
+
+`POST /benchmark` against `fixtures/demo/package-lock.json`, target `function-bind@1.1.2`, on the 4,765-package build. The lockfile contributes **156 resolved source versions**; the scan finds 64 paths to 15 exposed packages at depth 6.
+
+| | `algo.MSpaths` (batch) | `algo.SPpaths` per source |
+|---|---|---|
+| Round trips | **1** | **313** — one id lookup + one traversal per source, plus the target lookup |
+| Warm, median of 5 | **79 ms** | 6,577 ms *(25 sampled, projected to 156)* |
+| Warm, range | 63–237 ms | 5,516–9,441 ms |
+| Cold, first call after node start | 8,372 ms | 25,047 ms |
+
+**Warm median speedup ≈ 75×** (range 40–104× across five runs). On a cold node the gap narrows to **≈3×**, because the first traversal pays for page-cache warming that both approaches would otherwise amortise — the honest floor, not the headline.
+
+Two caveats stated rather than buried. The per-source column is **sampled at 25 sources and projected linearly** to 156, which the endpoint does to keep the comparison from taking minutes; it slightly flatters the naive path by assuming no per-call degradation. And the wall-time ratio moves with cache state, which is why the round-trip count is the sturdier number: **1 versus 313 is a property of the query shape, not of the hardware.**
+
 **Without HydraDB, the shape of this product changes.** Not "it would be slower": the natural implementation becomes a client-side BFS that pulls dependency edges out of a store and walks them in application code. That means the graph lives in the client, the depth bound becomes a loop counter, and every query is bounded by network round trips rather than by the traversal itself. The interesting work — bounded multi-source path enumeration over a typed edge — moves out of the database and into JavaScript, which is precisely the thing this track is about not doing.
 
 ### What else the graph does
