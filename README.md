@@ -133,19 +133,19 @@ Everything here is a deliberate, stated limit rather than an accident.
 
 | Bound | Value | Why |
 |---|---|---|
-| Graph size | **600 packages / 6,659 versions** in the current build | Seeded from 242 high-download packages, BFS to depth 2, capped at 600. Raise with `KESSLER_MAX_PACKAGES` and `KESSLER_MAX_DEPTH` |
+| Graph size | **4,765 packages / 86,024 versions / 224,533 resolved edges** in the current build | Seeded from 242 high-download packages, BFS to depth 3, cap 8,000 — not reached. Raise with `KESSLER_MAX_PACKAGES` and `KESSLER_MAX_DEPTH` |
 | Path depth | **6 hops** at query time | HydraDB traversals are bounded by design. Real blast radius overwhelmingly sits inside six hops |
-| Versions per package | **most recent 12** in the current build (default 50), stable releases only | Popular packages have hundreds of releases; keeping all of them multiplies into millions of edges. Set with `KESSLER_MAX_VERSIONS` |
+| Versions per package | **most recent 30** in the current build (default 50), stable releases only — 18.1 on average, since most packages have fewer than the cap | Popular packages have hundreds of releases; keeping all of them multiplies into millions of edges. Set with `KESSLER_MAX_VERSIONS` |
 | Dev dependencies | **excluded** from `RESOLVES_TO` | They do not propagate to consumers |
 | Semver strategy | **point-in-time** in the current build | See below |
 | Typosquat targets | top 200 seeds, character-level typos only for names ≥5 characters | Shorter names generate other real words, not typos |
 
 ### Semver resolution strategy
 
-Both figures below are measured on the current 600-package build. Two strategies are implemented, selected with `KESSLER_RESOLVE_STRATEGY`:
+Both figures below are measured on the current 4,765-package build, over the **250,241** ranges the resolver considers (`dependencies` and `optionalDependencies` whose target package is in the graph). Two strategies are implemented, selected with `KESSLER_RESOLVE_STRATEGY`:
 
-- **`point-in-time`** (current build) — resolve each range only against versions published at or before the dependent's own publish time. Historically accurate: it reconstructs what `npm install` would actually have produced the day that version shipped. Resolution rate **79.8%**.
-- **`latest-satisfying-now`** — resolve against every version held. Simpler, and slightly wrong: it can resolve a 2019 release to a 2024 dependency that did not exist yet. Resolution rate **89.3%**.
+- **`point-in-time`** (current build) — resolve each range only against versions published at or before the dependent's own publish time. Historically accurate: it reconstructs what `npm install` would actually have produced the day that version shipped. Resolution rate **89.7%** (224,533 edges).
+- **`latest-satisfying-now`** — resolve against every version held. Simpler, and slightly wrong: it can resolve a 2019 release to a 2024 dependency that did not exist yet. Resolution rate **95.1%** (237,957 edges).
 
 The gap between them is honest, not noise. Part of it is genuine (old ranges with no satisfying version at the time), and part is an artefact of the version cap, which keeps the *newest* versions while point-in-time needs *older* ones. Raising `KESSLER_MAX_VERSIONS` narrows the gap.
 
